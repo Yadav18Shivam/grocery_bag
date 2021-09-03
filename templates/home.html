@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>View List</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <style>
+            .delete_class{
+                float: right;
+            }
+        </style>
+    </head>
+    <body>
+        {% if messages %}
+        {%  for message in messages %}
+           <h1 class='messages'> {{ message }} </h1>
+        {% endfor %}
+     {% endif %}
+     {% if user.is_authenticated %} <h1>Welcome,  {{user}} </h1>{% endif %} 
+        <div class="container mt-5">
+            <!-- top -->
+            <div class="row">
+                <div class="col-lg-6">
+                    <h1>View Grocery List</h1>
+                </div>
+                <div class="col-lg-6 float-right">
+                   <form action= "{% url 'filter_date' %}"  method='POST' > 
+                     {% csrf_token %}
+                      <div class="row">
+                        <div class="col-lg-8">
+                            <input   type="date" class="form-control" name='filter_date' >
+                        </div>
+                        <div class="col-lg-4">
+                            <input type="submit" class="btn btn-danger" value="filter">
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+            <!-- // top -->
+            <!-- Grocery Cards -->
+            <div class="row mt-4">
+              {% for item in item_list %}
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title">{{item.item_name}}</h5>
+                          <h6 class="card-subtitle mb-2 text-muted">{{item.item_quantity}}</h6>
+                          <p class="text-danger">{{item.item_status}}</p>
+                          <a href="{% url 'update_item' item.pk %}" >  Update </a> 
+                            <a href="{% url 'delete_item' item.pk %}"  class="delete_class" >  Delete </a> 
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+             </div>
+        </div>
+    </body>
+</html>
+
+{% endblock content %}

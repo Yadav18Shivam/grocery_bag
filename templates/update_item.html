@@ -1,0 +1,56 @@
+{%extends 'base.html' %}
+{% block content %}
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Update List</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        <div class="container mt-5">
+        
+            <h1>Update Grocery List</h1>
+           
+            <form action="{% url 'update_item' pk %}"" method='POST' >
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Item name </label>
+                    <input type="text" class="form-control"  value={{item.item_name}} name='item_name' />
+                </div>
+                <div class="form-group">
+                    <label>Item quantity</label>
+                    <input type="text" class="form-control"  value={{item.item_quantity}} name='item_quantity' />
+                </div>
+                <div class="form-group">
+                    <label>Item status</label>
+                    <select class="form-control" name='item_status'>
+                        {% ifequal item.item_status "PENDING" %}
+                        <option value="PENDING" selected>PENDING</option>
+                        {% else %}
+                        <option value="PENDING" >PENDING</option> 
+                        {% endifequal %}
+                        {% ifequal item.item_status "BOUGHT" %}
+                        <option value="BOUGHT" selected>BOUGHT</option>
+                        {% else %}
+                        <option value="BOUGHT" >BOUGHT</option> 
+                        {% endifequal %}
+                        {% ifequal item.item_status "NOT AVAILABLE" %}
+                        <option value="NOT AVAILABLE" selected>NOT AVAILABLE</option>
+                        {% else %}
+                        <option value="NOT AVAILABLE">NOT AVAILABLE</option> 
+                        {% endifequal %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Date </label>
+                    <input type='date' class="form-control" value={{item.item_date.day}} name='item_date' />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Update" class="btn btn-danger">
+                </div>
+            </form>
+        </div>
+    </body> 
+</html>
+{% endblock content %}
